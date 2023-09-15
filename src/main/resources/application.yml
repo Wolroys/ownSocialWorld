@@ -4,6 +4,10 @@ spring:
     url: jdbc:postgresql://localhost:5432/social
     username: postgres
     password: 9567
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: on
 
   jpa:
     properties:
