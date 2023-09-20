@@ -1,10 +1,10 @@
 package com.wolroys.socialmediawebapp.http.controller;
 
 import com.wolroys.socialmediawebapp.dto.PostDto;
-import com.wolroys.socialmediawebapp.dto.UserCreateEditDto;
+import com.wolroys.socialmediawebapp.entity.Comment;
 import com.wolroys.socialmediawebapp.entity.Post;
-import com.wolroys.socialmediawebapp.entity.User;
 import com.wolroys.socialmediawebapp.mapper.PostMapper;
+import com.wolroys.socialmediawebapp.service.CommentService;
 import com.wolroys.socialmediawebapp.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,36 +23,41 @@ import java.util.Optional;
 public class PostController {
 
     private final PostService postService;
+    private final CommentService commentService;
     private final PostMapper mapper;
 
     @GetMapping
     public String showAll(Model model){
         List<PostDto> posts = postService.findAll();
         model.addAttribute("posts", posts);
-        return "home/posts";
+        model.addAttribute("newPost", new PostDto());
+        return "home/homePage";
     }
 
     @GetMapping("/{id}")
     public String findById(@PathVariable int id, Model model){
             return postService.findById(id)
                     .map(post -> {
+                        List<Comment> comments = commentService.findAllByPostId(id);
+                        model.addAttribute("comments", comments);
                         model.addAttribute("post", post);
+                        model.addAttribute("comment", new Comment());
                         return "home/post";
                     })
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-    @GetMapping("/create")
-    public String produce(Model model){
-        model.addAttribute("post", new PostDto());
-        return "redirect:/create";
-    }
+//    @GetMapping("/create")
+//    public String produce(Model model){
+//        model.addAttribute("post", new PostDto());
+//        return "";
+//    }
 
     @PostMapping("/create")
     public String create(@ModelAttribute PostDto post, RedirectAttributes redirectAttributes){
         redirectAttributes.addFlashAttribute("registrationSuccess", true);
         postService.create(post);
-        return "home/posts";
+        return "redirect:/home";
     }
 
     @GetMapping("/{id}/edit")
@@ -69,13 +74,14 @@ public class PostController {
     @PatchMapping("/{id}")
     public String update(@PathVariable int id, @ModelAttribute PostDto post){
         return postService.edit(id, post)
-                .map(it -> "redirect:/post/{id}")
+                .map(it -> "redirect:/home/{id}")
                 .orElseThrow();
     }
 
     @DeleteMapping("/{id}")
     public String remove(@PathVariable int id){
         postService.delete(id);
-        return "redirect:/users";
+        return "redirect:/home";
     }
+
 }

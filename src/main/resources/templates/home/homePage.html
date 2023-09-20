@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>homePage</title>
+</head>
+<body>
+    <form th:action="@{/home/create}" method="post" th:object="${newPost}">
+        <label for="title">
+            <input id="title" name="title" type="text" th:value="*{title}"
+                   placeholder="Enter a title of your post">
+        </label><br/>
+        <label for="content">
+            <textarea id="content" name="content" th:value="*{content}"
+                   placeholder="Enter a content of your post">
+            </textarea><br/>
+        </label>
+        <button type="submit">Post</button>
+    </form>
+    <div th:each="post : ${posts}">
+        <a th:href="@{/home/{postId}(postId=${post.id})}" th:text="${post.title}">Title</a>
+        <p th:text="${post.content}">Content</p>
+    </div>
+</body>
+</html>

@@ -1,6 +1,8 @@
 package com.wolroys.socialmediawebapp.dto;
 
 public class PostDto {
+
+    private int id;
     private String title;
 
     private String content;
@@ -8,9 +10,17 @@ public class PostDto {
     public PostDto() {
     }
 
-    public PostDto(String title, String content) {
+    public PostDto(int id, String title, String content) {
         this.title = title;
         this.content = content;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTitle() {

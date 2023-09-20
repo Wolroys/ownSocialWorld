@@ -1,0 +1,32 @@
+<!DOCTYPE>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Post</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/post.css}">
+</head>
+<body>
+<div>
+    <p th:text="${post.title}">Title</p>
+    <p th:text="${post.content}">Content</p>
+</div>
+<form th:action="@{/home/{id}/edit(id=${post.id})}">
+    <button type="submit">Edit</button>
+</form>
+<form th:action="@{/home/{id}(id=${post.id})}" th:method="DELETE">
+    <button type="submit">Delete</button>
+</form>
+<form th:action="@{/comments/{postId}/comment(postId=${post.id})}" method="post">
+    <label for="comment">
+        <textarea id="comment" th:field="${comment.content}" placeholder="Leave your comment"></textarea>
+    </label>
+    <button type="submit">Push</button>
+</form>
+<h3>Comments</h3>
+    <ul>
+        <li th:each="comment : ${comments}">
+            <p th:text="${comment.content}" class="comment-text">Content</p>
+        </li>
+    </ul>
+</body>
+</html>
