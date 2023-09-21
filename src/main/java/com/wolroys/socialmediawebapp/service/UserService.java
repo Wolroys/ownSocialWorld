@@ -2,23 +2,30 @@ package com.wolroys.socialmediawebapp.service;
 
 import com.wolroys.socialmediawebapp.dto.UserCreateEditDto;
 import com.wolroys.socialmediawebapp.dto.UserReadDto;
+import com.wolroys.socialmediawebapp.entity.Role;
 import com.wolroys.socialmediawebapp.entity.User;
 import com.wolroys.socialmediawebapp.mapper.UserMapper;
 import com.wolroys.socialmediawebapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final UserMapper mapper;
+    private final PasswordEncoder passwordEncoder;
 
     public List<UserReadDto> findAll(){
         return userRepository.findAll()
@@ -36,6 +43,11 @@ public class UserService {
     public UserReadDto create(UserCreateEditDto user){
         return Optional.of(user)
                 .map(mapper::toEntity)
+                .map(u -> {
+                    u.setPassword(passwordEncoder.encode(u.getPassword()));
+                    u.setRole(Role.USER);
+                    return u;
+                })
                 .map(userRepository::saveAndFlush)
                 .map(mapper::toDto)
                 .orElseThrow();
@@ -60,5 +72,16 @@ public class UserService {
                     userRepository.flush();
                     return true;
                 }).orElse(false);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findByUsername(username)
+                .map(entity -> new org.springframework.security.core.userdetails.User(
+                        entity.getUsername(),
+                        entity.getPassword(),
+                        Collections.singleton(entity.getRole())
+                ))
+                .orElseThrow(() -> new UsernameNotFoundException("Failed to retrieve user: " + username));
     }
 }
