@@ -1,16 +1,12 @@
 package com.wolroys.socialmediawebapp.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "users")
-public class User extends AuditingEntity<Integer>{
+public class User extends AuditingEntity<Integer> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,4 +20,14 @@ public class User extends AuditingEntity<Integer>{
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    public User(int id, String username, String email, String password, Role role) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
+    public User() {
+    }
 }

@@ -17,11 +17,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
-public class UserService implements UserDetailsService {
+public class UserService implements UserDetailsService{
 
     private final UserRepository userRepository;
     private final UserMapper mapper;
@@ -74,12 +75,19 @@ public class UserService implements UserDetailsService {
                 }).orElse(false);
     }
 
+    public boolean isExist(String username){
+        return userRepository.findByUsername(username)
+                .isPresent();
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username)
                 .map(entity -> new org.springframework.security.core.userdetails.User(
                         entity.getUsername(),
-                        entity.getPassword(),
+                        entity.getPassword().isBlank()
+                        ? "123"
+                        : entity.getPassword(),
                         Collections.singleton(entity.getRole())
                 ))
                 .orElseThrow(() -> new UsernameNotFoundException("Failed to retrieve user: " + username));

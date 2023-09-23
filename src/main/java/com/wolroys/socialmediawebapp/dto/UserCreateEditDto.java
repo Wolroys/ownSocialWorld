@@ -17,6 +17,11 @@ public class UserCreateEditDto implements UserDto {
         this.password = password;
     }
 
+    public UserCreateEditDto(String username, String email) {
+        this.username = username;
+        this.email = email;
+    }
+
     public String getUsername() {
         return username;
     }
