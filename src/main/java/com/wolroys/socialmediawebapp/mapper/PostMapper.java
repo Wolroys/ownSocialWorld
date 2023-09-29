@@ -4,6 +4,7 @@ import com.wolroys.socialmediawebapp.dto.PostDto;
 import com.wolroys.socialmediawebapp.entity.Post;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
 import org.springframework.stereotype.Component;
 
 

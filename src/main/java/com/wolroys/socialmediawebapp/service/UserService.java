@@ -40,6 +40,11 @@ public class UserService implements UserDetailsService{
                 .map(mapper::toDto);
     }
 
+    public User findByUsername(String username){
+        return userRepository.findByUsername(username)
+                .orElse(null);
+    }
+
     @Transactional
     public UserReadDto create(UserCreateEditDto user){
         return Optional.of(user)

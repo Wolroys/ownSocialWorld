@@ -1,10 +1,16 @@
 package com.wolroys.socialmediawebapp.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+
 public class PostDto {
 
     private int id;
+
+    @NotEmpty(message = "You should specify the title")
     private String title;
 
+    @NotBlank(message = "You should write something")
     private String content;
 
     public PostDto() {
@@ -14,6 +20,7 @@ public class PostDto {
         this.title = title;
         this.content = content;
     }
+
 
     public int getId() {
         return id;

@@ -32,8 +32,8 @@ create table comments(
 
 --changeset wolroys:4
 create table likes(
-    id bigserial primary key,
     user_id int references users(id),
-    posts_id int references posts(id)
+    posts_id int references posts(id),
+    primary key (user_id, posts_id)
 );
 

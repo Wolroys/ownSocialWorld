@@ -20,5 +20,8 @@
     <form th:action="@{/users/{userId}(userId=${user.id})}" th:method="DELETE">
         <button type="submit">Delete</button>
     </form>
+    <div th:if="${errors}">
+        <p style="color: red" th:each="error : ${errors}" th:text="${error.defaultMessage}">Error message</p>
+    </div>
 </body>
 </html>

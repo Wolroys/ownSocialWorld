@@ -20,7 +20,11 @@
     <label for="comment">
         <textarea id="comment" th:field="${comment.content}" placeholder="Leave your comment"></textarea>
     </label>
-    <button type="submit">Push</button>
+    <button type="submit">Publish</button>
+</form>
+<form th:action="@{/home/{postId}/like(postId=${post.id})}" method="get">
+    <button type="submit">Like</button>
+    <div th:text="${likes}">Likes</div>
 </form>
 <h3>Comments</h3>
     <ul>

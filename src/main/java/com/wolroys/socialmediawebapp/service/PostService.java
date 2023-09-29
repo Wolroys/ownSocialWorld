@@ -4,7 +4,9 @@ import com.wolroys.socialmediawebapp.dto.PostDto;
 import com.wolroys.socialmediawebapp.entity.Post;
 import com.wolroys.socialmediawebapp.mapper.PostMapper;
 import com.wolroys.socialmediawebapp.repository.PostRepository;
+import com.wolroys.socialmediawebapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +19,7 @@ import java.util.Optional;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final UserRepository userRepository;
     private final PostMapper mapper;
 
     public List<PostDto> findAll(){
@@ -33,8 +36,14 @@ public class PostService {
 
     @Transactional
     public PostDto create(PostDto dto){
-        return Optional.of(dto)
+        Post post = Optional.of(dto)
                 .map(mapper::toEntity)
+                .orElse(null);
+
+        post.setUser(userRepository.findByUsername(
+                SecurityContextHolder.getContext().getAuthentication().getName()).get());
+
+                return Optional.of(post)
                 .map(postRepository::save)
                 .map(mapper::toDto)
                 .orElseThrow();

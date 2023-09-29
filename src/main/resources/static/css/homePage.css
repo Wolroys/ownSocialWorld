@@ -1,0 +1,26 @@
+.post {
+    width: 30%;
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    float: left;
+}
+
+
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.post-title {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.post-content {
+    font-size: 14px;
+    margin-top: 5px;
+}

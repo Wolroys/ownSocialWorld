@@ -1,11 +1,18 @@
 package com.wolroys.socialmediawebapp.dto;
 
-import lombok.Value;
 
+import jakarta.validation.constraints.*;
 
 public class UserCreateEditDto implements UserDto {
+    @NotEmpty(message = "You need to fill username field")
     private String username;
+
+    @Email(message = "This email is incorrect")
+    @NotBlank(message = "You need to fill email field")
     private String email;
+
+    @NotEmpty(message = "You must to fill password field")
+    @Size(min = 8, message = "Your password must consist of at least 8 characters")
     private String password;
 
     public UserCreateEditDto() {
@@ -15,11 +22,6 @@ public class UserCreateEditDto implements UserDto {
         this.username = username;
         this.email = email;
         this.password = password;
-    }
-
-    public UserCreateEditDto(String username, String email) {
-        this.username = username;
-        this.email = email;
     }
 
     public String getUsername() {

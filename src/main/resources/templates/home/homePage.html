@@ -17,6 +17,9 @@
         </label>
         <button type="submit">Post</button>
     </form>
+    <div th:if="${errors}">
+        <p style="color: red" th:each="error : ${errors}" th:text="${error.defaultMessage}">Error message</p>
+    </div>
     <div th:each="post : ${posts}">
         <a th:href="@{/home/{postId}(postId=${post.id})}" th:text="${post.title}">Title</a>
         <p th:text="${post.content}">Content</p>

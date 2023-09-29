@@ -1,5 +1,6 @@
 package com.wolroys.socialmediawebapp.entity;
 
+import com.wolroys.socialmediawebapp.entity.util.LikeId;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,13 +13,6 @@ import lombok.NoArgsConstructor;
 @Table(name = "likes")
 public class Like {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    private User user;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Post post;
+    @EmbeddedId
+    private LikeId likeId;
 }
