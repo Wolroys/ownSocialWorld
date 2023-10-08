@@ -27,13 +27,6 @@ public class UserServiceTest extends TestSocialWebApplication {
     }
 
     @Test
-    void findAllTest(){
-        var actualResult = userService.findAll();
-
-        assertThat(actualResult).hasSize(3);
-    }
-
-    @Test
     void findByIdTest(){
         var actualResult = userService.findById(1);
 

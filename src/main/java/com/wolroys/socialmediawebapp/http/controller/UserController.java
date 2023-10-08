@@ -8,7 +8,13 @@ import com.wolroys.socialmediawebapp.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.Banner;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -28,18 +34,25 @@ public class UserController {
     private final UserService userService;
     private final UserMapper userMapper;
 
-    @GetMapping
-    public String findAll(Model model){
-        List<UserReadDto> users = userService.findAll();
+    @GetMapping("/adminPage")
+    public String findAll(Model model, @AuthenticationPrincipal UserDetails userDetails,
+                          @PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable){
+        Page<UserReadDto> users = userService.findAll(pageable);
+        User currentUser = userService.findByUsername(userDetails.getUsername());
+        model.addAttribute("currentUser", currentUser);
         model.addAttribute("users", users);
-        return "user/users";
+        return "user/adminPage";
     }
 
     @GetMapping("/{id}")
-    public String findById(Model model, @PathVariable int id){
+    public String findById(Model model, @PathVariable int id, @AuthenticationPrincipal UserDetails userDetails){
         return userService.findById(id)
                 .map(user -> {
+                    User currentUser = userService.findByUsername(userDetails.getUsername());
+                    boolean hasSubscribe = userService.hasSubscribe(currentUser, userMapper.toEntity(user));
+                    long subscribes = userService.countSubscribes(userMapper.toEntity(user));
                     model.addAttribute("user", user);
+                    model.addAttribute("")
                     return "user/user";
                 }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
@@ -97,4 +110,21 @@ public class UserController {
         return "redirect:/users";
     }
 
+    @GetMapping("/subscribe/{id}")
+    public String subscribe(@PathVariable int id, @AuthenticationPrincipal UserDetails userDetails){
+        User currentUser = userService.findByUsername(userDetails.getUsername());
+        User user = userMapper.toEntity(userService.findById(id).get());
+        userService.subscribe(currentUser, user);
+
+        return "redirect:/users/" + id;
+    }
+
+    @GetMapping("/unsubscribe/{id}")
+    public String unsubscribe(@PathVariable int id, @AuthenticationPrincipal UserDetails userDetails){
+        User currentUser = userService.findByUsername(userDetails.getUsername());
+        User user = userMapper.toEntity(userService.findById(id).get());
+        userService.unsubscribe(currentUser, user);
+
+        return "redirect:/users/" + id;
+    }
 }

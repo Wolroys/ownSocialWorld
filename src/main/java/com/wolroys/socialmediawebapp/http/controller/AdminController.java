@@ -1,2 +1,14 @@
-package com.wolroys.socialmediawebapp.http.controller;public class AdminPage {
+package com.wolroys.socialmediawebapp.http.controller;
+
+import com.wolroys.socialmediawebapp.service.UserService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+@RequiredArgsConstructor
+@RequestMapping("/admin")
+public class AdminController {
+
+    private final UserService userService;
 }

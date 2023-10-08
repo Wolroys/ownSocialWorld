@@ -7,6 +7,8 @@ import com.wolroys.socialmediawebapp.entity.User;
 import com.wolroys.socialmediawebapp.mapper.UserMapper;
 import com.wolroys.socialmediawebapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -28,11 +30,9 @@ public class UserService implements UserDetailsService{
     private final UserMapper mapper;
     private final PasswordEncoder passwordEncoder;
 
-    public List<UserReadDto> findAll(){
-        return userRepository.findAll()
-                .stream()
-                .map(mapper::toDto)
-                .toList();
+    public Page<UserReadDto> findAll(Pageable pageable){
+        return userRepository.findAll(pageable)
+                .map(mapper::toDto);
     }
 
     public Optional<UserReadDto> findById(int id){
@@ -83,6 +83,32 @@ public class UserService implements UserDetailsService{
     public boolean isExist(String username){
         return userRepository.findByUsername(username)
                 .isPresent();
+    }
+
+    @Transactional
+    public void subscribe(User currentUser, User user){
+        if (!user.getFollows().contains(currentUser)){
+            user.getFollowers().add(currentUser);
+
+            userRepository.save(user);
+        }
+    }
+
+    @Transactional
+    public void unsubscribe(User currentUser, User user){
+        if (user.getFollows().contains(currentUser)){
+            user.getFollowers().remove(currentUser);
+
+            userRepository.save(user);
+        }
+    }
+
+    public boolean hasSubscribe(User currentUser, User user){
+        return currentUser.getFollows().contains(user);
+    }
+
+    public long countSubscribes(User user){
+        return user.getFollowers().size();
     }
 
     @Override
