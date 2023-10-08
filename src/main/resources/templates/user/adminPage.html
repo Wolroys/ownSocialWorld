@@ -1,0 +1,46 @@
+<!DOCTYPE>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body>
+<table>
+    <div>
+        <a th:href="@{/home}">🏠</a>
+        <a th:href="@{/users/{userId}(userId=${currentUser.id})}">Profile</a>
+        <a th:href="@{/logout}">Logout</a>
+    </div>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Email</th>
+    </tr>
+    </thead>
+    <tbody>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.id}"></td>
+            <td>
+                <a th:href="@{/users/{id}(id=${user.id})}" th:text="${user.username}"></a>
+            </td>
+            <td th:text="${user.email}"></td>
+        </tr>
+    </tbody>
+</table>
+<ul>
+    <li th:if="${users.hasPrevious()}">
+        <a th:href="@{/users/adminPage(page=0)}">1</a>
+    </li>
+    <li th:if="${users.hasPrevious() && users.number != 1}">
+        <a th:href="@{/users/adminPage(page=${users.number - 1})}" th:text="${users.number}">Previous</a>
+    </li>
+    <li th:if="${users.hasNext()}">
+        <a th:href="@{/users/adminPage(page=${users.number + 1})}" th:text="${users.number + 2}"></a>
+    </li>
+    <li th:if="${users.hasNext() && users.totalPages - 1 != users.number + 1}">
+        <a th:href="@{/users/adminPage(page=${users.totalPages - 1})}" th:text="${users.totalPages}"></a>
+    </li>
+</ul>
+</body>
+</html>
