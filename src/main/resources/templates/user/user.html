@@ -6,6 +6,19 @@
 </head>
 <body>
     <div th:text="${user.username}">
-</div>
+    </div>
+    <div th:if="${!hasSubscribe}">
+        <form th:action="@{/users/subscribe/{userId}(userId=${user.id})}">
+            <button type="submit">Subscribe</button>
+        </form>
+    </div>
+    <div th:if="${hasSubscribe}">
+        <form th:action="@{/users/unsubscribe/{userId}(userId=${user.id})}">
+            <button type="submit">Unsubscribe</button>
+        </form>
+    </div>
+    <div>
+        <p th:text="${subscribes}">1</p>
+    </div>
 </body>
 </html>

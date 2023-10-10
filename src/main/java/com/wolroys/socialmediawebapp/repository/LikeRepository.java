@@ -18,8 +18,8 @@ public interface LikeRepository extends JpaRepository<Like, Long> {
     long countByPostId(@Param("postId") long postId);
 
     @Modifying
-    @Query("delete from Like l where l.likeId.userId = :userId")
-    void deleteByUserId(@Param("userId") long userId);
+    @Query("delete from Like l where l.likeId.userId = :userId and l.likeId.postsId = :postId")
+    void deleteByUserIdAndPostId(@Param("userId") long userId, @Param("postId") long postId);
 
     @Modifying
     @Query(value = "insert into Likes as l (user_id, posts_id) values (:userId, :postId)", nativeQuery = true)

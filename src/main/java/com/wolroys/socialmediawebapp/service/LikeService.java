@@ -1,5 +1,6 @@
 package com.wolroys.socialmediawebapp.service;
 
+import com.wolroys.socialmediawebapp.dto.PostDto;
 import com.wolroys.socialmediawebapp.entity.Like;
 import com.wolroys.socialmediawebapp.entity.Post;
 import com.wolroys.socialmediawebapp.entity.User;
@@ -32,15 +33,15 @@ public class LikeService {
 
 
         if (likeRepository.existsByUserIdAndPostId(userId, postId)){
-            likeRepository.deleteByUserId(userId);
+            likeRepository.deleteByUserIdAndPostId(userId, postId);
         }
         else {
             likeRepository.save(userId, postId);
         }
     }
 
-    public long getCount(int postId){
-        return likeRepository.countByPostId(postId);
+    public void getCount(PostDto postDto){
+        postDto.setLikes(likeRepository.countByPostId(postDto.getId()));
     }
 
     public boolean isLiked(long userId, long postId){

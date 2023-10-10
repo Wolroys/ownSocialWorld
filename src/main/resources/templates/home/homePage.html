@@ -3,9 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>homePage</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/homePage.css}">
 </head>
 <body>
-    <form th:action="@{/home/create}" method="post" th:object="${newPost}">
+    <div class="container">
+        <div class="control-panel">
+            <a th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}" th:href="@{/admin}">Control page</a>
+            <a th:href="@{/users/{userId}(userId=${currentUser.id})}">Profile</a>
+            <a th:href="@{/logout}">Logout</a>
+        </div>
+    </div>
+    <form th:action="@{/home/create}" method="post" th:object="${newPost}" class="post-form">
         <label for="title">
             <input id="title" name="title" type="text" th:value="*{title}"
                    placeholder="Enter a title of your post">
@@ -15,14 +23,19 @@
                    placeholder="Enter a content of your post">
             </textarea><br/>
         </label>
-        <button type="submit">Post</button>
+        <button type="submit" class="post-button">Post</button>
     </form>
-    <div th:if="${errors}">
-        <p style="color: red" th:each="error : ${errors}" th:text="${error.defaultMessage}">Error message</p>
+    <div th:if="${errors}" class="error-container">
+        <p class="error-message" style="color: red" th:each="error : ${errors}" th:text="${error.defaultMessage}">Error message</p>
     </div>
-    <div th:each="post : ${posts}">
-        <a th:href="@{/home/{postId}(postId=${post.id})}" th:text="${post.title}">Title</a>
-        <p th:text="${post.content}">Content</p>
+    <div th:each="post : ${posts}" class="post">
+        <a th:href="@{/users/{userId}(userId=${currentUser.id})}" th:text="${currentUser.username}" class="username">username</a>
+        <a class="post-title" th:href="@{/home/{postId}(postId=${post.id})}" th:text="${post.title}">Title</a>
+        <pre class="post-content" th:utext="${post.content}">Content</pre>
+        <form th:action="@{/home/{postId}/like(postId=${post.id})}" class="like-form">
+            <button type="submit">♥</button>
+            <p th:text="${post.likes}" class="likes">likes</p>
+        </form>
     </div>
 </body>
 </html>

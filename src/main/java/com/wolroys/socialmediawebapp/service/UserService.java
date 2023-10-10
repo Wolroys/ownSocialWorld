@@ -35,9 +35,8 @@ public class UserService implements UserDetailsService{
                 .map(mapper::toDto);
     }
 
-    public Optional<UserReadDto> findById(int id){
-        return userRepository.findById(id)
-                .map(mapper::toDto);
+    public Optional<User> findById(int id){
+        return userRepository.findById(id);
     }
 
     public User findByUsername(String username){
@@ -87,7 +86,7 @@ public class UserService implements UserDetailsService{
 
     @Transactional
     public void subscribe(User currentUser, User user){
-        if (!user.getFollows().contains(currentUser)){
+        if (!user.getFollowers().contains(currentUser)){
             user.getFollowers().add(currentUser);
 
             userRepository.save(user);
@@ -96,7 +95,7 @@ public class UserService implements UserDetailsService{
 
     @Transactional
     public void unsubscribe(User currentUser, User user){
-        if (user.getFollows().contains(currentUser)){
+        if (user.getFollowers().contains(currentUser)){
             user.getFollowers().remove(currentUser);
 
             userRepository.save(user);

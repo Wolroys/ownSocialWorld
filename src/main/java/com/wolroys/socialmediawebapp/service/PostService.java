@@ -6,6 +6,8 @@ import com.wolroys.socialmediawebapp.mapper.PostMapper;
 import com.wolroys.socialmediawebapp.repository.PostRepository;
 import com.wolroys.socialmediawebapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,11 +24,9 @@ public class PostService {
     private final UserRepository userRepository;
     private final PostMapper mapper;
 
-    public List<PostDto> findAll(){
-        return postRepository.findAll()
-                .stream()
-                .map(mapper::toDto)
-                .toList();
+    public Page<PostDto> findAll(Pageable pageable){
+        return postRepository.findAll(pageable)
+                .map(mapper::toDto);
     }
 
     public Optional<PostDto> findById(int id){

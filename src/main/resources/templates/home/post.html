@@ -22,9 +22,9 @@
     </label>
     <button type="submit">Publish</button>
 </form>
-<form th:action="@{/home/{postId}/like(postId=${post.id})}" method="get">
+<form th:action="@{/home/{postId}/likePost(postId=${post.id})}" method="get">
     <button type="submit">Like</button>
-    <div th:text="${likes}">Likes</div>
+    <div th:text="${post.likes}">Likes</div>
 </form>
 <h3>Comments</h3>
     <ul>

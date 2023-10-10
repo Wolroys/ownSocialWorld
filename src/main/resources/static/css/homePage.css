@@ -1,26 +1,143 @@
-.post {
-    width: 30%;
-    margin: 10px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-    float: left;
+body {
+    background-color: #e0e0e0;
 }
 
+.container {
+    max-width: 900px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    margin: 0 auto 20px;
+}
 
-.clearfix::after {
-    content: "";
-    clear: both;
-    display: table;
+.control-panel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.post {
+    margin: 20px auto;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #f7f7f7;
+    border-radius: 5px;
+    width: 80%;
+    max-width: 800px;
 }
 
 .post-title {
-    font-size: 16px;
+    font-size: 18px;
     font-weight: bold;
+    margin-bottom: 5px;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: transparent;
 }
 
 .post-content {
+    font-size: 16px;
+    line-height: 1.4;
+    max-height: 7.5em;
+    position: relative;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    word-wrap: break-word;
+    overflow: hidden;
+    white-space: pre-wrap;
+}
+
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+button[type="submit"] {
+    background-color: #1da1f2;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button[type="submit"]:hover {
+    background-color: #0b7bbf;
+}
+
+.error-message {
+    color: red;
+    margin-top: 10px;
+}
+
+.error-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 10px;
+    background-color: #f2f2f2;
+    color: #fff;
+    border: dashed red;
+    z-index: 9999;
+}
+
+.post-form {
+    background-color: transparent;
+    border: none;
+    margin: 0 auto;
+    max-width: 600px;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+.post a.username {
+    color: #000;
+    float: right;
+}
+
+textarea {
+    border: 1px solid #e1e8ed;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 16px;
+    width: 600px;
+    margin-bottom: 50px;
+    background-color: #f7f7f7;
+}
+
+.post-form input[type="text"],
+.post-form textarea {
+    width: 100%;
+    height: 30px;
+}
+
+.post-form textarea#content{
+    height: 100px;
+}
+
+.like-form {
+    display: flex;
+    align-items: center;
+}
+
+.like-form button[type="submit"] {
+    margin-right: 5px;
+}
+
+.likes {
     font-size: 14px;
-    margin-top: 5px;
+    color: #888;
+    margin-left: 5px;
 }
