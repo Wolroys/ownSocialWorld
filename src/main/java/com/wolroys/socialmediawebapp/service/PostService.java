@@ -29,6 +29,11 @@ public class PostService {
                 .map(mapper::toDto);
     }
 
+    public Page<PostDto> findAllByUserId(Pageable pageable, int userId){
+        return postRepository.findAllByUserId(pageable, userId)
+                .map(mapper::toDto);
+    }
+
     public Optional<PostDto> findById(int id){
         return postRepository.findById(id)
                 .map(mapper::toDto);

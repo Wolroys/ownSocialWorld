@@ -70,7 +70,6 @@ public class PostController {
                         model.addAttribute("post", post);
                         model.addAttribute("comment", new Comment());
                         model.addAttribute("isLiked", currentUserLiked);
-//                        model.addAttribute("likes", countLikes);
                         return "home/post";
                     })
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -135,5 +134,12 @@ public class PostController {
         likeService.like(postId);
 
         return "redirect:/home/{postId}";
+    }
+
+    @GetMapping("/{postId}/{userId}/like")
+    public String userLike(@PathVariable int postId, @PathVariable int userId){
+        likeService.like(postId);
+
+        return "redirect:/users/{userId}";
     }
 }

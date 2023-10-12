@@ -2,23 +2,46 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
+    <title>Profile</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/profile.css}">
 </head>
 <body>
-    <div th:text="${user.username}">
-    </div>
-    <div th:if="${!hasSubscribe}">
-        <form th:action="@{/users/subscribe/{userId}(userId=${user.id})}">
-            <button type="submit">Subscribe</button>
-        </form>
-    </div>
-    <div th:if="${hasSubscribe}">
-        <form th:action="@{/users/unsubscribe/{userId}(userId=${user.id})}">
-            <button type="submit">Unsubscribe</button>
-        </form>
-    </div>
-    <div>
-        <p th:text="${subscribes}">1</p>
+    <div class="profile-container">
+        <div class="profile-header">
+            <h2 th:text="${user.username}">Username</h2>
+            <div class="profile-stats">
+                <div class="profile-stat">
+                    <p th:if="${followers == 1}" th:text="${followers}">1</p>
+                    <p th:if="${followers != 1}" th:text="${followers}">Followers</p>
+                </div>
+                <div class="profile-stat">
+                    <p th:if="${subscribes == 1}" th:text="${subscribes}">1</p>
+                    <p th:if="${subscribes != 1}" th:text="${subscribes}">Subscribes</p>
+                </div>
+            </div>
+            <div class="profile-action">
+                <div th:if="${!hasSubscribe}">
+                    <form th:action="@{/users/subscribe/{userId}(userId=${user.id})}">
+                        <button type="submit">Subscribe</button>
+                    </form>
+                </div>
+                <div th:if="${hasSubscribe}">
+                    <form th:action="@{/users/unsubscribe/{userId}(userId=${user.id})}">
+                        <button type="submit">Unsubscribe</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="profile-posts">
+            <div th:each="post : ${posts}" class="post">
+                <a class="post-title" th:href="@{/home/{postId}(postId=${post.id})}" th:text="${post.title}">Title</a>
+                <pre class="post-content" th:utext="${post.content}">Content</pre>
+                <form th:action="@{/home/{postId}/{userId}/like(postId=${post.id}, userId=${user.id})}" class="like-form">
+                    <button type="submit">♥</button>
+                    <p th:text="${post.likes}" class="likes">likes</p>
+                </form>
+            </div>
+        </div>
     </div>
 </body>
 </html>

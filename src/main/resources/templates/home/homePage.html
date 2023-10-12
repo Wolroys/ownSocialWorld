@@ -29,7 +29,7 @@
         <p class="error-message" style="color: red" th:each="error : ${errors}" th:text="${error.defaultMessage}">Error message</p>
     </div>
     <div th:each="post : ${posts}" class="post">
-        <a th:href="@{/users/{userId}(userId=${currentUser.id})}" th:text="${currentUser.username}" class="username">username</a>
+        <a th:href="@{/users/{userId}(userId=${post.user.id})}" th:text="${post.user.username}" class="username">username</a>
         <a class="post-title" th:href="@{/home/{postId}(postId=${post.id})}" th:text="${post.title}">Title</a>
         <pre class="post-content" th:utext="${post.content}">Content</pre>
         <form th:action="@{/home/{postId}/like(postId=${post.id})}" class="like-form">

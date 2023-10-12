@@ -17,9 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -106,8 +104,12 @@ public class UserService implements UserDetailsService{
         return currentUser.getFollows().contains(user);
     }
 
-    public long countSubscribes(User user){
+    public long countFollowers(User user){
         return user.getFollowers().size();
+    }
+
+    public long countSubscribes(User user){
+        return user.getFollows().size();
     }
 
     @Override

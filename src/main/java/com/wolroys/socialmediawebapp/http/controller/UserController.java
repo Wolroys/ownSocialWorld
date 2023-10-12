@@ -1,9 +1,12 @@
 package com.wolroys.socialmediawebapp.http.controller;
 
+import com.wolroys.socialmediawebapp.dto.PostDto;
 import com.wolroys.socialmediawebapp.dto.UserCreateEditDto;
 import com.wolroys.socialmediawebapp.dto.UserReadDto;
 import com.wolroys.socialmediawebapp.entity.User;
 import com.wolroys.socialmediawebapp.mapper.UserMapper;
+import com.wolroys.socialmediawebapp.service.LikeService;
+import com.wolroys.socialmediawebapp.service.PostService;
 import com.wolroys.socialmediawebapp.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +34,8 @@ public class UserController {
 
     private final UserService userService;
     private final UserMapper userMapper;
+    private final PostService postService;
+    private final LikeService likeService;
 
     @GetMapping()
     public String findAll(Model model, @AuthenticationPrincipal UserDetails userDetails,
@@ -43,17 +48,20 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public String findById(Model model, @PathVariable int id, @AuthenticationPrincipal UserDetails userDetails){
+    public String findById(Model model, @PathVariable int id, @AuthenticationPrincipal UserDetails userDetails,
+                           @PageableDefault(size = 6, sort = "id", direction = Sort.Direction.DESC) Pageable pageable){
         return userService.findById(id)
                 .map(user -> {
                     User currentUser = userService.findByUsername(userDetails.getUsername());
-                    boolean hasSubscribe = userService.hasSubscribe(currentUser, user);
-                    long subscribes = userService.countSubscribes(user);
-                    System.out.println(hasSubscribe);
+                    Page<PostDto> posts = postService.findAllByUserId(pageable, user.getId());
+                    for (PostDto postDto : posts)
+                        likeService.getCount(postDto);
+                    model.addAttribute("posts", posts);
                     model.addAttribute("user", user);
-                    model.addAttribute("hasSubscribe", hasSubscribe);
-                    model.addAttribute("subscribes", subscribes);
+                    model.addAttribute("hasSubscribe", userService.hasSubscribe(currentUser, user));
+                    model.addAttribute("followers", userService.countFollowers(user));
                     model.addAttribute("currentUser", currentUser);
+                    model.addAttribute("subscribes", userService.countSubscribes(user));
                     return "user/user";
                 }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }

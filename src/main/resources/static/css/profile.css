@@ -1,0 +1,139 @@
+/* Оформление контейнера профиля */
+.profile-container {
+    max-width: 2000px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #e0e0e0;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    text-align: center;
+}
+
+/* Стили для заголовка пользователя */
+.profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.profile-header h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+}
+
+/* Стили для статистики подписчиков и подписок */
+.profile-stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-grow: 1;
+    margin-top: 10px;
+}
+
+.profile-stat {
+    text-align: center;
+    margin: 0 10px;
+}
+
+.profile-stat p {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.profile-stat span {
+    font-size: 14px;
+    color: #888;
+}
+
+/* Стили для кнопки подписки/отписки */
+.profile-action {
+    margin-top: 20px;
+}
+
+.profile-action button {
+    background-color: #1da1f2;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.profile-action button:hover {
+    background-color: #0b7bbf;
+}
+
+/* Стили для постов пользователя */
+.profile-posts .post {
+    margin: 20px auto;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #f7f7f7;
+    border-radius: 5px;
+    width: 80%;
+    max-width: 800px;
+}
+
+/* Стили для заголовка поста */
+.profile-posts .post .post-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: transparent;
+}
+
+/* Стили для контента поста */
+.profile-posts .post .post-content {
+    font-size: 16px;
+    line-height: 1.4;
+    max-height: 7.5em;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    word-wrap: break-word;
+    overflow: hidden;
+    white-space: pre-wrap;
+}
+
+/* Стили для кнопки "Лайк" */
+.profile-posts .post .like-form button {
+    background-color: #1da1f2;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 5px 10px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.profile-posts .post .like-form button:hover {
+    background-color: #0b7bbf;
+}
+
+/* Стили для количества лайков */
+.profile-posts .post .likes {
+    font-size: 14px;
+    color: #888;
+    margin-left: 5px;
+}
+
+textarea {
+    border: 1px solid #e1e8ed;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 16px;
+    width: 600px;
+    margin-bottom: 50px;
+    background-color: #f7f7f7;
+}
+
+.post-form textarea#content{
+    height: 100px;
+}

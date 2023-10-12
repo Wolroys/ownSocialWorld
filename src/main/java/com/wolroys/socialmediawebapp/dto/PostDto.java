@@ -1,5 +1,6 @@
 package com.wolroys.socialmediawebapp.dto;
 
+import com.wolroys.socialmediawebapp.entity.User;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
@@ -21,12 +22,15 @@ public class PostDto {
 
     private Long likes;
 
+    private User user;
+
     public PostDto() {
     }
 
-    public PostDto(int id, String title, String content) {
+    public PostDto(int id, String title, String content, User user) {
         this.title = title;
         this.content = content;
+        this.user = user;
     }
 
 
